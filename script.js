@@ -1,4 +1,7 @@
 const sketchContainer = document.getElementById("sketch");
+const clearButton = document.getElementById("clear");
+const colorPicker = document.getElementById("colorPicker");
+
 let isDrawing = false;
 
 sketchContainer.addEventListener("mousedown", () => {
@@ -11,26 +14,27 @@ document.addEventListener("mouseup", () => {
 
 sketchContainer.addEventListener("mousemove", draw);
 
+clearButton.addEventListener("click", clearSketch);
+
 function draw(event) {
     if (!isDrawing) return;
     
     const sketch = event.target;
-    const rect = sketch.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const pixel = event.target;
 
-    const pixel = document.createElement("div");
-    pixel.classList.add("pixel");
-    pixel.style.left = `${x}px`;
-    pixel.style.top = `${y}px`;
+    // Apply the highlight animation
+    pixel.classList.add("highlight");
 
-    sketch.appendChild(pixel);
+    // Remove the highlight class after the animation completes
+    pixel.addEventListener("animationend", () => {
+        pixel.classList.remove("highlight");
+    });
 
-    // Apply the highlight effect
-    pixel.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
+    if (event.target !== sketch) return;
+    pixel.style.backgroundColor = colorPicker.value;
+}
 
-    // Remove the highlight effect after a short delay
-    setTimeout(() => {
-        pixel.style.backgroundColor = "transparent";
-    }, 200);
+function clearSketch() {
+    const pixels = document.querySelectorAll(".pixel");
+    pixels.forEach(pixel => pixel.style.backgroundColor = "transparent");
 }
