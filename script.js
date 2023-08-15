@@ -26,11 +26,11 @@ function draw(event) {
 
     sketch.appendChild(pixel);
 
-    // Apply the highlight animation
-    pixel.classList.add("highlight");
+    // Apply the highlight effect
+    pixel.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
 
-    // Remove the highlight class after the animation completes
-    pixel.addEventListener("animationend", () => {
-        pixel.classList.remove("highlight");
-    });
+    // Remove the highlight effect after a short delay
+    setTimeout(() => {
+        pixel.style.backgroundColor = "transparent";
+    }, 200);
 }
